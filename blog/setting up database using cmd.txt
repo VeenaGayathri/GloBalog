@@ -1,0 +1,79 @@
+Microsoft Windows [Version 10.0.22000.832]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\F\OneDrive\Desktop\flaskproj>python
+Python 3.10.1 (tags/v3.10.1:2cd268a, Dec  6 2021, 19:10:37) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from hello import db
+C:\Users\F\AppData\Local\Programs\Python\Python310\lib\site-packages\flask_sqlalchemy\__init__.py:872: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+  warnings.warn(FSADeprecationWarning(
+>>> db.createall()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'SQLAlchemy' object has no attribute 'createall'. Did you mean: 'create_all'?
+>>> db.create_all()
+>>> from hello import User,Post
+>>> user1=User(username='Ve',email='v@gmail.com',password='12345678')
+>>> user2=User(username='Be',email='v1@gmail.com',password='1t6y2345678')
+>>> db.session.add(user1)
+>>> db.session.add(user2)
+>>> db.session.commit()
+>>> User.query.all()
+[User('Ve,v@gmail.com'), User('Be,v1@gmail.com')]
+>>> User.query.first()
+User('Ve,v@gmail.com')
+>>> User.query.filter_by(username='Ve').all()
+[User('Ve,v@gmail.com')]
+>>> User.query.filter_by(username='Ve').first()
+User('Ve,v@gmail.com')
+>>> user=User.query.filter_by(username='Ve').first()
+>>> user
+User('Ve,v@gmail.com')
+>>> user.id
+1
+>>> user= User.query.get(10
+...
+... )
+>>> user= User.query.get(1)
+>>> user
+User('Ve,v@gmail.com')
+>>> user.posts
+[]
+>>> user.id
+1
+>>> post1=Post(title='blog1',content='my first post',user_id=user.id)
+>>> post1
+Post('blog1','None')
+>>> post2=Post(title='blog2',content='my first post2',user_id=user.id)
+>>> post2
+Post('blog2','None')
+>>> db.session.add(post1)
+>>> db.session.add(post2)
+>>> db.session.commit()
+>>> user.posts
+[Post('blog1','2022-08-02 10:41:41.004773'), Post('blog2','2022-08-02 10:41:41.017952')]
+
+>>> for post in user.posts:
+...     print('title=',post.title,'author=',post.user_id)
+...
+title= blog1 author= 1
+title= blog2 author= 1
+>>> Post.query.first()
+Post('blog1','2022-08-02 10:41:41.004773')
+>>> post=Post.query.first()
+>>> post.user_id
+1
+>>> post.author
+User('Ve,v@gmail.com')
+>>> for post in user.posts:
+...     print('title=',post.title,'author=',post.author)
+...
+title= blog1 author= User('Ve,v@gmail.com')
+title= blog2 author= User('Ve,v@gmail.com')
+>>> db.drop_all()
+>>> db.create_all()
+>>> User.query.all()
+[]
+>>> Post.query.all()
+[]
+>>>

@@ -1,0 +1,51 @@
+{%extends 'main/layout.html'%}
+{%block content%}
+	<div class="content-section"> <!--content section there in .css file-->
+		<form method="POST" action=""> <!--goes to same route action=""-->
+			 {{form.hidden_tag()}} <!--using form instance and using hiddentag method, used for security purposes, it adds csrf token or cross site request forgery token , used to protect sites along with the secret key we are gonna use-->
+			 <fieldset class="form-group">
+			 	<legend class="border-bottom mb-4">Log In</legend><!--margin bottom 4-->
+			 	
+			 	<div class='form-group'>
+			 		{{form.email.label(class="form-control-label")}}
+			 		{%if form.email.errors%}
+				 		{{form.email(class="form-control form-control-lg is-invalid")}}
+				 		{%for error in form.email.errors%}
+				 			<span>{{error}}</span>
+				 		{%endfor%}
+				 	{%else%}
+				 	{{form.email(class="form-control form-control-lg")}}
+			 		{%endif%}			 
+			 	</div>
+
+			 	<div class='form-group'>
+			 		{{form.password.label(class="form-control-label")}}
+			 		{%if form.password.errors%}
+				 		{{form.password(class="form-control form-control-lg is-invalid")}}
+				 		{%for error in form.password.errors%}
+				 			<span>{{error}}</span>
+				 		{%endfor%}
+				 	{%else%}
+				 	{{form.password(class="form-control form-control-lg")}}
+			 		{%endif%}
+			 	</div>
+
+			 	<div class="form-check">
+			 		{{form.remember(class="form-check-input")}}
+			 		{{form.remember.label(class="form-check-label")}}
+			 	</div>
+			 	
+			 </fieldset>
+
+			 <div class='form-group' >
+			 		{{form.submit(class="btn btn-success")}}
+			 <small class='text-muted ml-2 '><a href="{{url_for('users.request_reset_password')}}">Forgot Password?</a></small>
+			</div>
+		</form>		
+	</div>
+	<div class='border-top pt-3'>
+			<small class="text-muted">New to GloBalog?<a class="ml-2" href="{{url_for('users.register')}}"> Create your GloBalog account!</a> <!--MARGIN LEFT-2-->
+			</small>
+			</div>
+{%endblock content%}
+

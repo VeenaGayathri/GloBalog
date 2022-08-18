@@ -1,0 +1,31 @@
+{%extends 'main/layout.html'%}
+{%block content%}
+	<h4>User: {{user.username}}, Total posts: {{posts.total}} </h4>
+	{%for post in posts.items%}<!--paginate object so posts.items, for post in posts|reverse will display databse in reverse , that is newest first-->
+		<article class="media content-section">
+		<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+		  <div class="media-body">
+		    <div class="article-metadata">
+		      <a class="mr-2" href="{{url_for('users.user_post',username=user.username)}}">{{ post.author.username }}</a>
+		      <small class="text-muted">{{ post.date.strftime('%d/%m/%Y') }}</small>
+		    </div>
+		    <h3><a class="article-title" href="{{url_for('posts.specific_post',post_id=post.id)}}">{{ post.title }}</a></h3>
+		    <p class="article-content">{{ "\n".join(post.content.splitlines()[:10])}}
+		    {% if post.content.splitlines()[:10] != post.content.splitlines()%}...{% endif%}
+		  	</p>
+		  </div>
+		</article>
+	{%endfor%}
+	<!--displaying page no. links at bottom of page-->
+	{%for pageno in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %} <!--at left edge,right edge, left of current page, right of current page, including current page-->
+		{%if pageno%}
+			{%if posts.page==pageno%}
+				<a class="btn btn-outline-info mb-4" href="{{url_for('users.user_post',username=user.username,page=pageno)}}">{{pageno}}</a>
+			{%else%}
+				<a class="btn mb-4" href="{{url_for('users.user_post',username=user.username,page=pageno)}}">{{pageno}}</a>
+			{%endif%}
+		{%else%}
+			..<!--if pageno.=none-->
+		{%endif%}
+	{%endfor%}
+{%endblock content%}

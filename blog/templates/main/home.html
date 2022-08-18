@@ -1,0 +1,84 @@
+{%extends 'main/layout.html'%}
+{%block content%}
+	
+	{%for post in posts.items%}<!--paginate object so posts.items, for post in posts|reverse will display databse in reverse , that is newest first-->
+		<article class="media content-section">
+		 <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+		  <div class="media-body">
+		    <div class="article-metadata">
+		      <a class="mr-2" href="{{url_for('users.user_post',username=post.author.username)}}" >{{ post.author.username }}</a>
+		      <small class="text-muted">{{ post.date.strftime('%d/%m/%Y') }}</small>
+		    </div>
+		    <h3><a class="article-title" href="{{url_for('posts.specific_post',post_id=post.id)}}">{{ post.title }}</a></h3>
+		    <p class="article-content">{{ "\n".join(post.content.splitlines()[:10])}}
+		    {% if post.content.splitlines()[:10] != post.content.splitlines()%}...{% endif%}
+		  	</p>
+		  </div>
+		</article>
+	{%endfor%}
+	<!--displaying page no. links at bottom of page-->
+	{%for pageno in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %} <!--at left edge,right edge, left of current page, right of current page, including current page-->
+		{%if pageno%}
+			{%if posts.page==pageno%}
+				<a class="btn btn-outline-info mb-4" href="{{url_for('main.home',page=pageno)}}">{{pageno}}</a>
+			{%else%}
+				<a class="btn mb-4" href="{{url_for('main.home',page=pageno)}}">{{pageno}}</a>
+			{%endif%}
+		{%else%}
+			..<!--if pageno.=none-->
+		{%endif%}
+	{%endfor%}
+{%endblock content%}
+
+<!--Flask uses jinja 2 template engine
+When you build a server-side application with a template engine, the template engine replaces the variables in a template file with actual values, and displays this value to the client. This makes it easier to quickly build our application.
+
+A web server is computer software and underlying hardware that accepts requests via HTTP (the network protocol created to distribute web content) or its secure variant HTTPS. A user agent, commonly a web browser or web crawler, initiates communication by making a request for a web page or other resource using HTTP, and the server responds with the content of that resource or an error message. A web server can also accept and store resources sent from the user agent if configured to do so.[1] [2]
+
+A resource sent from a web server can be a preexisting file (static content) available to the web server, or it can be generated at the time of the request (dynamic content) by another program that communicates with the server software. The former usually can be served faster and can be more easily cached for repeated requests, while the latter supports a broader range of applications.
+
+C:\Users\OneDrive\Desktop\GloBalog>python
+Python 3.10.1 (tags/v3.10.1:2cd268a, Dec  6 2021, 19:10:37) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from blog.model import Post
+C:\Users\Programs\Python\Python310\lib\site-packages\flask_sqlalchemy\__init__.py:872: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+  warnings.warn(FSADeprecationWarning(
+>>> Post.query.paginate(per_page=2,page=2)
+<flask_sqlalchemy.Pagination object at 0x000001AFA9B9EFE0>
+>>> post=Post.query.paginate(per_page=2,page=2)
+>>> for p in post.items:
+...     print(p)
+...
+Post('Third Post','2022-08-06 09:18:45.202575')
+Post('emoji adding','2022-08-06 09:25:12.726045')
+>>> for p in post.iter_items():
+...     print(p)
+...
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Pagination' object has no attribute 'iter_items'
+>>> for p in post.iter_pages():
+...     print(p)
+...
+1
+2
+3
+4
+-->
+<!--For multiple pages example of iterpages
+1
+2
+None => .. or empty symbol for missing pages at bottom of page ex 1 2 .. 4 5 and so on
+4
+5
+6
+7
+None
+8
+9
+10
+11
+12
+13
+-->
+

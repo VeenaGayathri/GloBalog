@@ -1,0 +1,73 @@
+
+{%extends 'main/layout.html'%}
+{%block content%}
+	<div class="content-section"> <!--content section there in .css file-->
+		<form method="POST" action=""> <!--goes to same route action=""-->
+			 {{form.hidden_tag()}} <!--using form instance and using hiddentag method, used for security purposes, it adds csrf token or cross site request forgery token , used to protect sites along with the secret key we are gonna use-->
+			 <fieldset class="form-group">
+			 	<legend class="border-bottom mb-4">{{legend}}</legend><!--margin bottom 4-->
+			 	
+			 	<div class='form-group'>
+			 		{{form.title.label(class="form-control-label")}}
+			 		{%if form.title.errors%}
+				 		{{form.title(class="form-control form-control-lg is-invalid")}}
+				 		{%for error in form.title.errors%}
+				 			<span>{{error}}</span>
+				 		{%endfor%}
+				 	{%else%}
+				 	{{form.title(class="form-control form-control-lg")}}
+			 		{%endif%}			 
+			 	</div>
+
+			 	<div class='form-group'>
+			 		{{form.content.label(class="form-control-label")}}
+			 		{%if form.content.errors%}
+				 		{{form.content(class="form-control form-control-lg is-invalid")}}
+				 		{%for error in form.content.errors%}
+				 			<span>{{error}}</span>
+				 		{%endfor%}
+				 	{%else%}
+				 	{{form.content(class="form-control form-control-lg")}}
+			 		{%endif%}
+			 	</div>		 	
+			 </fieldset>
+
+			 <div class='form-group'>
+			 		{{form.submit(class="btn btn-success")}}
+			 </div>
+
+		</form>
+			
+			
+	</div>
+{%endblock content%}
+
+
+
+
+posts=[
+{
+	'title': "My first time here",
+	'author':"John latina",
+	'date':"6/07/2022",
+	'content':"A web server is computer software and underlying hardware that accepts requests via HTTP",
+},
+{
+	'title': "My fifth time here",
+	'author':"Jewry ratina",
+	'date':"6/10/2022",
+	'content':"you are a queen",
+}
+
+]
+
+"""
+gave error when used
+{
+	title: "My first time here",
+	author:"John latina",
+	date:"6/07/2022",
+	content:"A web server is computer software and underlying hardware that accepts requests via HTTP",
+},
+because keys should be immutable,as python does hashing of keys to find associated value
+"""
