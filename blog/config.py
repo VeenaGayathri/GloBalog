@@ -2,7 +2,9 @@ import os
 class Config:
 	#SECRET_KEY = os.urandom(64)
 	SECRET_KEY=os.environ.get('secret')
-	SQLALCHEMY_DATABASE_URI='sqlite:///site.db'
+	#SQLALCHEMY_DATABASE_URI='sqlite:///site.db'
+	SQLALCHEMY_DATABASE_URI='postgres://payxsludttecnn:1f21ad372f686917511dcf11fec757d59acb97ef11bb335c53811d7eac95bada@ec2-54-164-40-66.compute-1.amazonaws.com:5432/dc70jkdsbjok6m'
+
 	#specifying uri for database and setting it as configuration to set as location, we are using sqlite database, a file on our file system
 	#relative path /// located in our folder of project
 	MAIL_SERVER='smtp.googlemail.com'
