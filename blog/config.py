@@ -1,7 +1,7 @@
 import os
 class Config:
-	#SECRET_KEY = os.urandom(64)
-	SECRET_KEY=os.environ.get('secret')
+	SECRET_KEY = os.urandom(64)
+	#SECRET_KEY=os.environ.get('secret')
 	#SQLALCHEMY_DATABASE_URI='sqlite:///site.db'
 	SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL')
 	#specifying uri for database and setting it as configuration to set as location, we are using sqlite database, a file on our file system
