@@ -3,7 +3,7 @@
 	<h4>User: {{user.username}}, Total posts: {{posts.total}} </h4>
 	{%for post in posts.items%}<!--paginate object so posts.items, for post in posts|reverse will display databse in reverse , that is newest first-->
 		<article class="media content-section">
-		<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+		<img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"><!--Config.S3_BUCKET,post.author.image_file) }}">-->
 		  <div class="media-body">
 		    <div class="article-metadata">
 		      <a class="mr-2" href="{{url_for('users.user_post',username=user.username)}}">{{ post.author.username }}</a>

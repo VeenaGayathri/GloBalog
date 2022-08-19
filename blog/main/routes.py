@@ -1,9 +1,16 @@
 from flask import render_template, request, Blueprint
 from blog.model import Post,User
 import os
+from blog.s3_functions import show_image
+from blog.config import Config 
+from blog.s3_functions import create_presigned_url
 
 main=Blueprint('main','__name__') 
 
+@main.route("/pics")
+def list():
+    contents = show_image(Config.S3_BUCKET)
+    return render_template('main/contents.html', contents=contents)
 
 @main.route('/')
 @main.route('/home')

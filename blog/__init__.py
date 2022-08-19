@@ -10,7 +10,29 @@ import boto3, botocore
 import flask_assets
 from flask_assets import Environment, Bundle
 #from Config import S3_BUCKET, S3_KEY, S3_SECRET, S3_LOCATION
+import os
 
+"""
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('secret')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASSWORD')
+mail = Mail(app)
+
+"""
+
+#import flask_s3
+#>>> from my_application import app
+#>>> flask_s3.create_all(app)
 
 db=SQLAlchemy()
 #creating database instance, now well create classes or (models) of databases

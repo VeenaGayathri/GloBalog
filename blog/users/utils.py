@@ -30,12 +30,14 @@ def save_pic(form_pic):
     resized_img=Image.open(form_pic)
     resized_img.thumbnail(req_size)
     resized_img.save(savepicpath)#saved pic in our locn but not yet updated users pic
-   
-    return savepicname
+    
     #output = send_to_s3(file, current_app.config["S3_BUCKET"])
-    #upload_file_bucket = Config.S3_BUCKET
-    #upload_file_key = 'static/profile_pics/' + str(savepicname)
-    #client.upload_file(savepicpath, upload_file_bucket, upload_file_key)
+    
+    upload_file_bucket = Config.S3_BUCKET
+    upload_file_key = 'static/profile_pics/' + str(savepicname)
+    client.upload_file(savepicpath, upload_file_bucket, upload_file_key)
+    return savepicname
+    
     #print(response)
     #return "{}{}".format(Config.S3_LOCATION,savepicname)
     #return response

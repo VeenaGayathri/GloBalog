@@ -16,7 +16,7 @@
 	<!--<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">-->
 	 <!-- add icon link -->
 	 <link rel="shortcut icon" href="{{url_for('static',filename='/favicon/favicon.ico')}}">
-	 
+	 <!--blog.f3.create_presigned_url(config.S3_BUCKET,'favicon/favicon.ico')}}-->
 	 
 </head>
 
@@ -40,6 +40,7 @@
 				        <div class="navbar-nav mr-auto">
 				          <a class="nav-item nav-link" href="{{url_for('main.home')}}">Home</a>
 				          <a class="nav-item nav-link" href="{{url_for('main.about')}}">About</a>
+				          <a class="nav-item nav-link" href="{{url_for('main.list')}}">Contents</a>
 				        </div>
 				        <!-- Navbar Right Side -->
 				        <div class="navbar-nav">

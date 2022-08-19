@@ -7,6 +7,7 @@ from blog.users.forms import (RegisterationForm, LoginForm, UpdateAccountForm,
 from blog.users.utils import save_pic, send_activation_mail, check_confirmed
 import os
 from blog.config import Config 
+from blog.s3_functions import show_image, create_presigned_url
 
 users=Blueprint('users','__name__') 
 
@@ -139,22 +140,24 @@ def account():
         if form.profile_pic.data:
             pic_file_name=save_pic(form.profile_pic.data)
             last_pic=current_user.image_file
+            #contents = show_image(BUCKET)
             current_user.image_file=pic_file_name
 
             if last_pic!='default.jpg':                                 
                 file_path=os.path.join(current_app.root_path, 'static/profile_pics', last_pic)
                 os.remove(file_path)
      
-
         current_user.username=form.username.data
         current_user.email=form.email.data
         db.session.commit()
         flash("Your account has been updated!",'success')
         return redirect(url_for('users.account'))
     elif request.method=='GET':
+
         form.username.data=current_user.username
         form.email.data=current_user.email
-    image_file= url_for('static',filename='profile_pics/'+current_user.image_file)#"{}".format(current_user.image_file)#
+    url = create_presigned_url(Config.S3_BUCKET,current_user.image_file)
+    image_file= url #url_for('static',filename='profile_pics/'+current_user.image_file)#"{}".format(current_user.image_file)#
     return render_template('users/account.html',title='Account',form=form,image_file=image_file)
     
 @users.route('/user/<string:username>')
@@ -211,7 +214,7 @@ def delete_account_request(username):
     form=UpdateAccountForm()
     form.username.data=current_user.username
     form.email.data=current_user.email
-    image_file= url_for('static',filename='profile_pics/'+current_user.image_file)
+    image_file= create_presigned_url(Config.S3_BUCKET,current_user.image_file)
     
     token = User.generate_delete_token(user.email)
     confirm_url = url_for('users.delete_account', token=token, _external=True)
