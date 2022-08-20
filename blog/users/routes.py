@@ -156,8 +156,8 @@ def account():
 
         form.username.data=current_user.username
         form.email.data=current_user.email
-    url = create_presigned_url(Config.S3_BUCKET,current_user.image_file)
-    image_file= url #url_for('static',filename='profile_pics/'+current_user.image_file)#"{}".format(current_user.image_file)#
+    #url = create_presigned_url(Config.S3_BUCKET,current_user.image_file)
+    image_file= url_for('static',filename='profile_pics/'+current_user.image_file)#"{}".format(current_user.image_file)#
     return render_template('users/account.html',title='Account',form=form,image_file=image_file)
     
 @users.route('/user/<string:username>')
