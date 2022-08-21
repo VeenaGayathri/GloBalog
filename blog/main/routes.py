@@ -54,7 +54,7 @@ def announcements():
 
 @main.route('/help')
 def help():
-    mail=os.environ.get('blog_mail')
+    mail=Config.MAIL_USERNAME
     return render_template('main/help.html',title='Help',mail=mail)
 
 
