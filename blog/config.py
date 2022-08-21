@@ -19,5 +19,5 @@ class Config:
 	aws_secret_access_key=S3_SECRET
 	FLASK_ASSETS_USE_S3=True
 	DEFAULT_PIC=f'''https://{S3_BUCKET}.amazonaws.com/static/profile_pics/default.jpeg'''
-	SESSION_PERMANENT = True
+	SESSION_PERMANENT = False
 	SESSION_TYPE = "filesystem"
