@@ -9,6 +9,7 @@ from flask_s3 import FlaskS3
 import boto3, botocore
 import flask_assets
 from flask_assets import Environment, Bundle
+from flask.ext.session import Session
 #from Config import S3_BUCKET, S3_KEY, S3_SECRET, S3_LOCATION
 import os
 
@@ -60,6 +61,8 @@ client = boto3.client("s3",
 	aws_access_key_id= Config.S3_KEY,
 	aws_secret_access_key= Config.S3_SECRET)
 
+sess = Session()
+
 def create_app(config_class=Config):
 	app = Flask(__name__)
 	app.config.from_object(Config)
@@ -67,6 +70,7 @@ def create_app(config_class=Config):
 	db.init_app(app)
 	with app.app_context():
 		db.create_all()
+	sess.init_app(app)
 	bcrypt.init_app(app)
 	login_manager.init_app(app)
 	mail.init_app(app)
