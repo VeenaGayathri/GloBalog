@@ -9,7 +9,7 @@ from flask_s3 import FlaskS3
 import boto3, botocore
 import flask_assets
 from flask_assets import Environment, Bundle
-from flask.ext.session import Session
+from flask_session import Session
 #from Config import S3_BUCKET, S3_KEY, S3_SECRET, S3_LOCATION
 import os
 
