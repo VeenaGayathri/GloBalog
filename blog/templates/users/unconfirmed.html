@@ -25,7 +25,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-	        <form action="{{url_for('users. delete_unconfirmed_account',username=current_user.username)}}" method="POST">
+	        <form action="{{url_for('users.delete_unconfirmed_account',username=current_user.username)}}" method="POST">
 	        	<input  class="btn btn-danger" type="submit" value="Yes">
 	        </form>
 	      </div>
