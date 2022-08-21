@@ -216,7 +216,6 @@ def confirmed_deletion():
     return render_template('users/deleted_account.html',title='Deletion Page')
 
 @users.route('/<string:username>/delete_account',methods=['POST'])#only submit request from modal
-@login_required
 def delete_unconfirmed_account(username):
     user=User.query.filter_by(username=username).first_or_404()
     if user!=current_user:
