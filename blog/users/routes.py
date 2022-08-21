@@ -85,6 +85,9 @@ def login():
     if login_form.validate_on_submit():
         user=User.query.filter_by(email=login_form.email.data).first()
         if user and bcrypt.check_password_hash(user.password,login_form.password.data): # login_form password.data is data read from user input and user.password is data retirieved from database
+            if request.method == "POST":
+              # record the user name
+              session["username"] = request.form.get("username")
             login_user(user,remember=login_form.remember.data)
             #to login we use flask login_user function, it also takes remember as arg
             flash(f'Hi {user.username}, You are Logged in!', 'success') 
