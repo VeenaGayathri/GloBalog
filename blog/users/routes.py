@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
 from flask_login import login_user, current_user, logout_user, login_required
-from blog import db, bcrypt
+from blog import db, bcrypt,ss
 from blog.model import User, Post
 from blog.users.forms import (RegisterationForm, LoginForm, UpdateAccountForm,
                                    RequestResetPasswordForm, ResetPasswordForm)
@@ -8,6 +8,7 @@ from blog.users.utils import save_pic, send_activation_mail, check_confirmed
 import os
 from blog.config import Config 
 from blog.s3_functions import show_image, create_presigned_url
+from flask_session import Session
 
 users=Blueprint('users','__name__') 
 
@@ -49,6 +50,7 @@ def register():
         subject = "Please confirm your email"
         send_activation_mail(user.email, subject, html)
         
+        session["username"] = request.form.get("username")
         login_user(user,remember=True)
         
         flash('An email has been sent with instructions to create your account.', 'info')
@@ -85,9 +87,9 @@ def login():
     if login_form.validate_on_submit():
         user=User.query.filter_by(email=login_form.email.data).first()
         if user and bcrypt.check_password_hash(user.password,login_form.password.data): # login_form password.data is data read from user input and user.password is data retirieved from database
-            if request.method == "POST":
+            #if request.method == "POST":
               # record the user name
-              session["username"] = request.form.get("username")
+            session["username"] = request.form.get("username")
             login_user(user,remember=login_form.remember.data)
             #to login we use flask login_user function, it also takes remember as arg
             flash(f'Hi {user.username}, You are Logged in!', 'success') 
@@ -98,8 +100,10 @@ def login():
     return render_template('users/login.html',title="Login",form=login_form)
 
 @users.route('/logout')
+@login_required
 def logout():
     logout_user()
+    session.pop('username', None)
     return redirect(url_for("main.home"))
 
 @users.route('/account',methods=['GET','POST'])
