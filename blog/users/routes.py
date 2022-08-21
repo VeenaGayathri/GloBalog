@@ -228,3 +228,4 @@ def delete_unconfirmed_account(username):
     db.session.commit()
     flash('Your Account has been deleted', 'info')
     return redirect(url_for('users.confirmed_deletion'))
+  
