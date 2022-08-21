@@ -1,7 +1,7 @@
 import os
 class Config:
-	FLASK_APP = environ.get('FLASK_APP')
-	FLASK_ENV = environ.get('FLASK_ENV')
+	FLASK_APP = os.environ.get('FLASK_APP')
+	FLASK_ENV = os.environ.get('FLASK_ENV')
 	SECRET_KEY = os.urandom(64)
 	#SECRET_KEY=os.environ.get('secret')
 	#SQLALCHEMY_DATABASE_URI='sqlite:///site.db'
