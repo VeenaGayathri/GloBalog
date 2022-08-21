@@ -11,32 +11,6 @@ from blog.s3_functions import show_image, create_presigned_url
 
 users=Blueprint('users','__name__') 
 
-"""
-@app.route('/confirm/<token>')
-@login_required
-def confirm_email(token):
-
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    try:
-        email = User.confirm_token(token)
-    except:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-        return redirect(url_for('home'))
-    user = User.query.filter_by(email=email).first_or_404()
-    logout_user()
-    if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
-        
-    else:
-        user.confirmed = True
-        db.session.commit()
-        flash('You have confirmed your account. You can now try logging in!', 'success')
-       
-    return redirect(url_for('home'))
-"""
-
-
 @users.route('/confirm/<token>')
 def confirm_email(token):
     email = User.confirm_token(token)
@@ -47,13 +21,11 @@ def confirm_email(token):
     user = User.query.filter_by(email=email).first_or_404()
     if user.confirmed:
         flash('Account already confirmed. Please login.', 'success')
-        
     else:
         user.confirmed = True
         db.session.commit()
         flash('You have confirmed your account. You can now try logging in!', 'success')
     return redirect(url_for('users.login'))
-
 
 @users.route('/register', methods=['GET', 'POST'])
 def register():
@@ -68,7 +40,6 @@ def register():
             password=hashed_password,
             confirmed=False
         )
-
         db.session.add(user)
         db.session.commit()
 
@@ -110,7 +81,6 @@ def resend_confirmation():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-
     login_form=LoginForm()
     if login_form.validate_on_submit():
         user=User.query.filter_by(email=login_form.email.data).first()
@@ -129,9 +99,9 @@ def logout():
     logout_user()
     return redirect(url_for("main.home"))
 
-@check_confirmed
 @users.route('/account',methods=['GET','POST'])
 @login_required
+@check_confirmed
 #we need to login to access this route
 #we also need to tell where login route is located so we set login route in __init__ 
 def account():
@@ -142,18 +112,15 @@ def account():
             last_pic=current_user.image_file
             #contents = show_image(BUCKET)
             current_user.image_file=pic_file_name
-
             if last_pic!='default.jpg':                                 
                 file_path=os.path.join(current_app.root_path, 'static/profile_pics', last_pic)
-                os.remove(file_path)
-     
+                os.remove(file_path)   
         current_user.username=form.username.data
         current_user.email=form.email.data
         db.session.commit()
         flash("Your account has been updated!",'success')
         return redirect(url_for('users.account'))
     elif request.method=='GET':
-
         form.username.data=current_user.username
         form.email.data=current_user.email
     #url = create_presigned_url(Config.S3_BUCKET,current_user.image_file)
@@ -175,13 +142,11 @@ def request_reset_password():
     form=RequestResetPasswordForm()
     if form.validate_on_submit():
         user=User.query.filter_by(email=form.email.data).first()
-        
         token = User.token=user.get_reset_password_token()
         confirm_url = url_for('users.reset_password', token=token, _external=True)
         html = render_template('mails/reset_password_mail.html', confirm_url=confirm_url)
         subject = "Reset Password Request"
         send_activation_mail(user.email, subject, html)
-          
         flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('users.login'))
     return render_template('users/request_reset_password.html',title='Reset Password',form=form)
@@ -203,9 +168,9 @@ def reset_password(token):
         return redirect(url_for('users.login'))
      return render_template('users/reset_password.html',title='Reset Password',form=form)
 
-@check_confirmed
-@users.route('/post/<string:username>/delete_account',methods=['POST'])#only submit request from modal
+@users.route('/<string:username>/delete_account',methods=['POST'])#only submit request from modal
 @login_required
+@check_confirmed
 def delete_account_request(username):
     user=User.query.filter_by(username=username).first_or_404()
     if user!=current_user:
@@ -215,7 +180,7 @@ def delete_account_request(username):
     form.username.data=current_user.username
     form.email.data=current_user.email
     image_file= create_presigned_url(Config.S3_BUCKET,current_user.image_file)
-    
+  
     token = User.generate_delete_token(user.email)
     confirm_url = url_for('users.delete_account', token=token, _external=True)
     html = render_template('mails/delete_account.html', confirm_url=confirm_url)
@@ -236,7 +201,6 @@ def delete_account(token):
             if current_user.image_file!='default.jpg':
                 file_path=os.path.join(current_app.root_path, 'static/profile_pics', current_user.image_file)
                 os.remove(file_path)
-            
             db.session.delete(user)
             db.session.commit()
             flash('Your Account has been deleted', 'info')
@@ -247,3 +211,13 @@ def delete_account(token):
 def confirmed_deletion():
     return render_template('users/deleted_account.html',title='Deletion Page')
 
+@users.route('/<string:username>/delete_account',methods=['POST'])#only submit request from modal
+@login_required
+def delete_unconfirmed_account(username):
+    user=User.query.filter_by(username=username).first_or_404()
+    if user!=current_user:
+        abort(403)#forbidden route
+    db.session.delete(user)
+    db.session.commit()
+    flash('Your Account has been deleted', 'info')
+    return redirect(url_for('users.confirmed_deletion'))
