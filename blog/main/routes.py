@@ -43,7 +43,7 @@ def community():
         posts=Post.query.filter_by(author=user).all()
         Top_users.append([user,len(posts)])
     Top_users=sorted(Top_users,key=lambda x: (x[1]),reverse=True)
-    return render_template('main/community.html',title='Top Users',users=Top_users)
+    return render_template('main/community.html',title='Community',users=Top_users)
 
 
 @main.route('/announcements')
