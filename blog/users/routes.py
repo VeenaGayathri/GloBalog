@@ -186,7 +186,7 @@ def delete_account_request(username):
     form=UpdateAccountForm()
     form.username.data=current_user.username
     form.email.data=current_user.email
-    image_file= create_presigned_url(Config.S3_BUCKET,current_user.image_file)
+    image_file= current_user.image_file
   
     token = User.generate_delete_token(user.email)
     confirm_url = url_for('users.delete_account', token=token, _external=True)
