@@ -215,13 +215,4 @@ def delete_account(token):
 def confirmed_deletion():
     return render_template('users/deleted_account.html',title='Deletion Page')
 
-@users.route('/<string:username>/delete_account',methods=['POST'])#only submit request from modal
-def delete_unconfirmed_account(username):
-    user=User.query.filter_by(username=username).first_or_404()
-    if user!=current_user:
-        abort(403)#forbidden route
-    db.session.delete(user)
-    db.session.commit()
-    flash('Your Account has been deleted', 'info')
-    return redirect(url_for('users.confirmed_deletion'))
   
