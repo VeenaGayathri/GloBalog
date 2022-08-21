@@ -205,9 +205,6 @@ def delete_account(token):
     else:
         user = User.query.filter_by(email=email).first_or_404()
         if user.confirmed:
-            if current_user.image_file!='default.jpg':
-                file_path=os.path.join(current_app.root_path, 'static/profile_pics', current_user.image_file)
-                os.remove(file_path)
             db.session.delete(user)
             db.session.commit()
             flash('Your Account has been deleted', 'info')
