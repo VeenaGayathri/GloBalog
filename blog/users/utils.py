@@ -25,12 +25,12 @@ def save_pic(form_pic):
     savepicname=pic_token+ext
     savepicpath= os.path.join(current_app.root_path, 'static/profile_pics', savepicname)#root path of package directory, os path join to concatenate properly
     
-    #form_pic.save(savepicpath)
+    form_pic.save(savepicpath)
 
-    req_size=(125,125)
-    resized_img=Image.open(form_pic)
-    resized_img.thumbnail(req_size)
-    resized_img.save(savepicpath)#saved pic in our locn but not yet updated users pic
+    #req_size=(125,125)
+    #resized_img=Image.open(form_pic)
+    #resized_img.thumbnail(req_size)
+    #resized_img.save(savepicpath)#saved pic in our locn but not yet updated users pic
     
     #output = send_to_s3(file, current_app.config["S3_BUCKET"])
     
