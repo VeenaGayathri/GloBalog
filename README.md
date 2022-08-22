@@ -1,5 +1,6 @@
 # GloBalog
-Blog post website
+Blog posting website made using Flask, Bootstrap
+
 About GloBalog
 GloBalog is essentially a blog post website, where you can share your ideas and views with the amazing GloBalog community.
 
