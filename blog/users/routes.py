@@ -116,12 +116,12 @@ def account():
     if form.validate_on_submit():
         if form.profile_pic.data:
             pic_file_name=save_pic(form.profile_pic.data)
-            last_pic=current_user.image_file
+            #last_pic=current_user.image_file
             #contents = show_image(BUCKET)
             current_user.image_file=pic_file_name
-            if last_pic!='default.jpg':                                 
-                file_path=os.path.join(current_app.root_path, 'static/profile_pics', last_pic)
-                os.remove(file_path)   
+            #if last_pic!='default.jpg':                                 
+             #   file_path=os.path.join(current_app.root_path, 'static/profile_pics', last_pic)
+              #  os.remove(file_path)   
         current_user.username=form.username.data
         current_user.email=form.email.data
         db.session.commit()
@@ -179,6 +179,7 @@ def reset_password(token):
 @login_required
 @check_confirmed
 def delete_account_request(username):
+  
     user=User.query.filter_by(username=username).first_or_404()
     if user!=current_user:
         abort(403)#forbidden route
@@ -186,7 +187,7 @@ def delete_account_request(username):
     form=UpdateAccountForm()
     form.username.data=current_user.username
     form.email.data=current_user.email
-    image_file= current_user.image_file
+    image_file= url_for('static',filename='profile_pics/'+current_user.image_file)
   
     token = User.generate_delete_token(user.email)
     confirm_url = url_for('users.delete_account', token=token, _external=True)
