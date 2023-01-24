@@ -14,3 +14,4 @@ Get to know more about our community using our sidebar
 You can be at the Top! Track your rank using Top Users sidebar
 Our achievements are transparent! We share our blog updates using Announcements sidebar
 Not happy with your post? Its alright you can delete it anytime!
+![Screenshot (478)](https://user-images.githubusercontent.com/91724479/214250839-35439e01-724b-42bb-8531-e07033b11de0.png)
